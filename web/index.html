@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TTS User Study</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      transition: direction 0.3s, text-align 0.3s;
+    }
+    h1, h2, label, p {
+      margin-bottom: 0.5em;
+    }
+    .sample {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 2em;
+      padding-bottom: 1em;
+    }
+    select, input {
+      width: 100%;
+      padding: 5px;
+      margin: 5px 0 15px;
+    }
+    audio {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Language Selector -->
+<label>
+  Language / שפה:
+  <select id="langSelect">
+    <option value="en">English</option>
+    <option value="he">עברית</option>
+  </select>
+</label>
+
+<h1 id="title"></h1>
+<p id="description"></p>
+
+<form id="studyForm">
+  <div id="userFields"></div>
+  <div id="samplesContainer"></div>
+  <button type="submit"></button>
+</form>
+
+<script>
+  let lang = "en";
+
+  fetch("config.json")
+    .then(res => res.json())
+    .then(config => {
+      const form = document.getElementById("studyForm");
+      const langSelect = document.getElementById("langSelect");
+
+      langSelect.addEventListener("change", () => {
+        lang = langSelect.value;
+        renderUI();
+      });
+
+      function renderUI() {
+        // Set direction for Hebrew
+        document.body.dir = lang === "he" ? "rtl" : "ltr";
+        document.body.style.textAlign = lang === "he" ? "right" : "left";
+
+        // Set title and description
+        document.getElementById("title").textContent = config.title[lang];
+        document.getElementById("description").textContent = config.description[lang];
+
+        // Name & Email
+        const userFields = document.getElementById("userFields");
+        userFields.innerHTML = `
+          <label>${config.labels.name[lang]}:
+            <input type="text" name="name" required>
+          </label>
+          <label>${config.labels.email[lang]}:
+            <input type="email" name="email" required>
+          </label>
+        `;
+
+        // Samples
+        const container = document.getElementById("samplesContainer");
+        container.innerHTML = "";
+
+        config.samples.forEach((sample, i) => {
+          const div = document.createElement("div");
+          div.className = "sample";
+
+          div.innerHTML = `<h2>${lang === "he" ? `שאלה ${i + 1}` : `Question ${i + 1}`}</h2>
+                           <p><strong>${sample.prompt}</strong></p>`;
+
+          sample.options.forEach(opt => {
+            div.innerHTML += `
+              <label><strong>${opt.name}</strong><br>
+                <audio controls>
+                  <source src="${opt.url}" type="audio/mp3">
+                </audio>
+              </label>
+            `;
+          });
+
+          const optionsHtml = sample.options
+            .map(o => `<option value="${o.name}">${o.name}</option>`)
+            .join('');
+
+          div.innerHTML += `
+            <label>${config.labels.natural[lang]}:
+              <select name="${sample.id}_natural" required>
+                <option value="">--</option>
+                ${optionsHtml}
+              </select>
+            </label>
+            <label>${config.labels.pronunciation[lang]}:
+              <select name="${sample.id}_pronunciation" required>
+                <option value="">--</option>
+                ${optionsHtml}
+              </select>
+            </label>
+          `;
+
+          container.appendChild(div);
+        });
+
+        form.querySelector("button").textContent = config.labels.submit[lang];
+      }
+
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        console.log("User submission:", data);
+        alert(config.thank_you[lang]);
+        form.reset();
+      };
+
+      renderUI(); // initial render
+    });
+</script>
+
+</body>
+</html>

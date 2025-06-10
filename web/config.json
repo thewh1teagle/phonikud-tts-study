@@ -1,0 +1,36 @@
+{
+  "title": {
+    "en": "Hebrew TTS Study",
+    "he": "מחקר TTS בעברית"
+  },
+  "description": {
+    "en": "Please listen to the audio samples and answer the questions below.",
+    "he": "אנא האזן לדוגמאות הקוליות וענה על השאלות שלמטה."
+  },
+  "thank_you": {
+    "en": "Thank you for participating!",
+    "he": "תודה על ההשתתפות!"
+  },
+  "labels": {
+    "name": { "en": "Name", "he": "שם" },
+    "email": { "en": "Email", "he": "דוא\"ל" },
+    "natural": { "en": "Most natural", "he": "הכי טבעי" },
+    "pronunciation": { "en": "Best pronunciation", "he": "הגייה הטובה ביותר" },
+    "submit": { "en": "Submit", "he": "שלח" }
+  },
+  "samples": [
+    {
+      "id": "question1",
+      "prompt": "שלום וברכה לכולם",
+      "options": [
+        { "name": "Model 1", "url": "audio/sample1_model1.mp3" },
+        { "name": "Model 2", "url": "audio/sample1_model2.mp3" },
+        { "name": "Model 3", "url": "audio/sample1_model3.mp3" },
+        { "name": "Model 4", "url": "audio/sample1_model4.mp3" },
+        { "name": "Model 5", "url": "audio/sample1_model5.mp3" },
+        { "name": "Model 6", "url": "audio/sample1_model6.mp3" },
+        { "name": "Model 7", "url": "audio/sample1_model7.mp3" }
+      ]
+    }
+  ]
+}
