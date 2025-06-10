@@ -23,13 +23,13 @@
       "id": "question1",
       "prompt": "שלום וברכה לכולם",
       "options": [
-        { "name": "Model 1", "url": "audio/sample1_model1.mp3" },
-        { "name": "Model 2", "url": "audio/sample1_model2.mp3" },
-        { "name": "Model 3", "url": "audio/sample1_model3.mp3" },
-        { "name": "Model 4", "url": "audio/sample1_model4.mp3" },
-        { "name": "Model 5", "url": "audio/sample1_model5.mp3" },
-        { "name": "Model 6", "url": "audio/sample1_model6.mp3" },
-        { "name": "Model 7", "url": "audio/sample1_model7.mp3" }
+        { "name": "Model 1", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "Model 2", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "Model 3", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "Model 4", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "Model 5", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "Model 6", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "Model 7", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" }
       ]
     }
   ]
