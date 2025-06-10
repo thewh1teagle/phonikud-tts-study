@@ -1,136 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TTS User Study</title>
-    <style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TTS User Study</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .sample {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 2em;
+      padding-bottom: 1em;
+    }
+    .audio-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .audio-option {
+      flex: 1;
+      min-width: 150px;
+      text-align: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+    }
+    .audio-option strong {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .audio-option audio {
+      width: 100%;
+    }
+    .question-fields {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .question-fields > label {
+      flex: 1;
+    }
+    .user-fields-grid {
+      display: flex;
+      gap: 15px;
+    }
+    .user-fields-grid > label {
+      flex: 1;
+    }
+    select, input {
+      width: 100%;
+      padding: 5px;
+      margin: 5px 0 15px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 600px) {
       body {
-        font-family: sans-serif;
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-      }
-      .sample {
-        border-bottom: 1px solid #ddd;
-        margin-bottom: 2em;
-        padding-bottom: 1em;
+        padding: 15px;
       }
       .audio-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 15px 0;
+        flex-direction: column;
       }
       .audio-option {
-        flex: 1;
-        min-width: 150px;
-        text-align: center;
-        padding: 15px;
-        border: 1px solid #ddd;
-      }
-      .audio-option strong {
-        font-size: 16px;
-        margin-bottom: 10px;
-        display: block;
-      }
-      .audio-option audio {
-        width: 100%;
+        min-width: auto;
       }
       .question-fields {
-        display: flex;
-        gap: 15px;
-        margin-top: 15px;
-      }
-      .question-fields > label {
-        flex: 1;
+        flex-direction: column;
+        gap: 0;
       }
       .user-fields-grid {
-        display: flex;
-        gap: 15px;
+        flex-direction: column;
+        gap: 0;
       }
-      .user-fields-grid > label {
-        flex: 1;
-      }
-      select,
-      input {
-        width: 100%;
-        padding: 5px;
-        margin: 5px 0 15px;
-      }
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-      }
+    }
+  </style>
+</head>
+<body>
 
-      /* Mobile responsive */
-      @media (max-width: 600px) {
-        body {
-          padding: 15px;
-        }
-        .audio-grid {
-          flex-direction: column;
-        }
-        .audio-option {
-          min-width: auto;
-        }
-        .question-fields {
-          flex-direction: column;
-          gap: 0;
-        }
-        .user-fields-grid {
-          flex-direction: column;
-          gap: 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Language Selector -->
-    <label>
-      Language / שפה:
-      <select id="langSelect">
-        <option value="en">English</option>
-        <option value="he">עברית</option>
-      </select>
-    </label>
+<!-- Language Selector -->
+<label>
+  Language / שפה:
+  <select id="langSelect">
+    <option value="en">English</option>
+    <option value="he">עברית</option>
+  </select>
+</label>
 
-    <h1 id="title"></h1>
-    <p id="description"></p>
+<h1 id="title"></h1>
+<p id="description"></p>
 
-    <form id="studyForm">
-      <div id="userFields"></div>
-      <div id="samplesContainer"></div>
-      <button type="submit"></button>
-    </form>
+<form id="studyForm">
+  <div id="userFields"></div>
+  <div id="samplesContainer"></div>
+  <button type="submit"></button>
+</form>
 
-    <script>
-      let lang = "he";
+<script>
+  let lang = "he";
 
-      fetch("config.json")
-        .then((res) => res.json())
-        .then((config) => {
-          const form = document.getElementById("studyForm");
-          const langSelect = document.getElementById("langSelect");
+  fetch("config.json")
+    .then(res => res.json())
+    .then(config => {
+      const form = document.getElementById("studyForm");
+      const langSelect = document.getElementById("langSelect");
 
-          langSelect.addEventListener("change", () => {
-            lang = langSelect.value;
-            renderUI();
-          });
+      langSelect.addEventListener("change", () => {
+        lang = langSelect.value;
+        renderUI();
+      });
 
-          function renderUI() {
-            // Set direction for Hebrew
-            document.body.dir = lang === "he" ? "rtl" : "ltr";
-            document.body.style.textAlign = lang === "he" ? "right" : "left";
+      function renderUI() {
+        // Set direction for Hebrew
+        document.body.dir = lang === "he" ? "rtl" : "ltr";
+        document.body.style.textAlign = lang === "he" ? "right" : "left";
 
-            // Set title and description
-            document.getElementById("title").textContent = config.title[lang];
-            document.getElementById("description").textContent =
-              config.description[lang];
+        // Set title and description
+        document.getElementById("title").textContent = config.title[lang];
+        document.getElementById("description").textContent = config.description[lang];
 
-            // Name & Email
-            const userFields = document.getElementById("userFields");
-            userFields.innerHTML = `
+        // Name & Email
+        const userFields = document.getElementById("userFields");
+        userFields.innerHTML = `
           <div class="user-fields-grid">
             <label>${config.labels.name[lang]}:
               <input type="text" name="name" required>
@@ -141,44 +140,39 @@
           </div>
         `;
 
-            // Samples
-            const container = document.getElementById("samplesContainer");
-            container.innerHTML = "";
-            const totalQuestions = config.samples.length;
+        // Samples
+        const container = document.getElementById("samplesContainer");
+        container.innerHTML = "";
+        const totalQuestions = config.samples.length;
 
-            config.samples.forEach((sample, i) => {
-              const div = document.createElement("div");
-              div.className = "sample";
+        config.samples.forEach((sample, i) => {
+          const div = document.createElement("div");
+          div.className = "sample";
 
-              const questionNum =
-                lang === "he"
-                  ? `שאלה ${i + 1} מתוך ${totalQuestions}`
-                  : `Question ${i + 1} of ${totalQuestions}`;
+          const questionNum = lang === "he" 
+            ? `שאלה ${i + 1} מתוך ${totalQuestions}`
+            : `Question ${i + 1} of ${totalQuestions}`;
 
-              div.innerHTML = `
+          div.innerHTML = `
             <h2>${questionNum}</h2>
             <p><strong>${sample.prompt}</strong></p>
             <div class="audio-grid">
-              ${sample.options
-                .map(
-                  (opt) => `
+              ${sample.options.map(opt => `
                 <div class="audio-option">
                   <strong>${opt.name}</strong>
                   <audio controls preload="none" data-src="${opt.url}">
                     <source type="audio/mp3">
                   </audio>
                 </div>
-              `
-                )
-                .join("")}
+              `).join('')}
             </div>
           `;
 
-              const optionsHtml = sample.options
-                .map((o) => `<option value="${o.name}">${o.name}</option>`)
-                .join("");
+          const optionsHtml = sample.options
+            .map(o => `<option value="${o.name}">${o.name}</option>`)
+            .join('');
 
-              div.innerHTML += `
+          div.innerHTML += `
             <div class="question-fields">
               <label>${config.labels.natural[lang]}:
                 <select name="${sample.id}_natural" required>
@@ -195,49 +189,72 @@
             </div>
           `;
 
-              container.appendChild(div);
-
-              const tracks = Array.from(document.querySelectorAll("audio"));
-              tracks.forEach(function (track) {
-                track.addEventListener("play", (event) => {
-                  tracks.forEach(function (track) {
-                    if (track !== event.target) track.pause();
-                  });
-                });
-              });
-            });
-
-            // Add lazy loading for audio
-            document.querySelectorAll("audio[data-src]").forEach((audio) => {
-              audio.addEventListener("loadstart", function () {
-                if (!this.src && this.dataset.src) {
-                  this.src = this.dataset.src;
-                  this.load();
-                }
-              });
-
-              audio.addEventListener("play", function () {
-                if (!this.src && this.dataset.src) {
-                  this.src = this.dataset.src;
-                  this.load();
-                }
-              });
-            });
-
-            form.querySelector("button").textContent =
-              config.labels.submit[lang];
-          }
-
-          form.onsubmit = function (e) {
-            e.preventDefault();
-            const data = Object.fromEntries(new FormData(form).entries());
-            console.log("User submission:", data);
-            alert(config.thank_you[lang]);
-            form.reset();
-          };
-
-          renderUI(); // initial render
+          container.appendChild(div);
         });
-    </script>
-  </body>
+
+        // Add lazy loading for audio
+        document.querySelectorAll('audio[data-src]').forEach(audio => {
+          audio.addEventListener('loadstart', function() {
+            if (!this.src && this.dataset.src) {
+              this.src = this.dataset.src;
+              this.load();
+            }
+          });
+          
+          audio.addEventListener('play', function() {
+            if (!this.src && this.dataset.src) {
+              this.src = this.dataset.src;
+              this.load();
+            }
+          });
+        });
+
+        // Prevent multiple audio playing at once
+        const tracks = Array.from(document.querySelectorAll("audio"));
+        tracks.forEach(function (track) {
+          track.addEventListener("play", (event) => {
+            tracks.forEach(function (track) {
+              if (track !== event.target) track.pause();
+            });
+          });
+        });
+
+        form.querySelector("button").textContent = config.labels.submit[lang];
+      }
+
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        console.log("User submission:", data);
+        
+        // Send to JSONBin
+        fetch('https://api.jsonbin.io/v3/b', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': config.jsonbin_key
+          },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            language: lang,
+            responses: data
+          })
+        })
+        .then(response => response.json())
+        .then(result => {
+          console.log('Data saved:', result);
+          alert(config.thank_you[lang]);
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Error saving data:', error);
+          alert('Error saving data. Please try again.');
+        });
+      };
+
+      renderUI(); // initial render
+    });
+</script>
+
+</body>
 </html>
