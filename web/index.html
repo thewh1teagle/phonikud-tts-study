@@ -90,8 +90,8 @@
 <label>
   Language / שפה:
   <select id="langSelect">
-    <option value="he">עברית</option>
     <option value="en">English</option>
+    <option value="he">עברית</option>
   </select>
 </label>
 
@@ -160,8 +160,8 @@
               ${sample.options.map(opt => `
                 <div class="audio-option">
                   <strong>${opt.name}</strong>
-                  <audio controls>
-                    <source src="${opt.url}" type="audio/mp3">
+                  <audio controls preload="none" data-src="${opt.url}">
+                    <source type="audio/mp3">
                   </audio>
                 </div>
               `).join('')}
@@ -190,6 +190,23 @@
           `;
 
           container.appendChild(div);
+        });
+
+        // Add lazy loading for audio
+        document.querySelectorAll('audio[data-src]').forEach(audio => {
+          audio.addEventListener('loadstart', function() {
+            if (!this.src && this.dataset.src) {
+              this.src = this.dataset.src;
+              this.load();
+            }
+          });
+          
+          audio.addEventListener('play', function() {
+            if (!this.src && this.dataset.src) {
+              this.src = this.dataset.src;
+              this.load();
+            }
+          });
         });
 
         form.querySelector("button").textContent = config.labels.submit[lang];
