@@ -9,7 +9,7 @@
   },
   "thank_you": {
     "en": "Thank you for participating!",
-    "he": "תודה על ההשתתפות!"
+    "he": "תודה על ההשתתפות! ❤️"
   },
   "labels": {
     "name": { "en": "Name", "he": "שם" },
@@ -23,13 +23,26 @@
       "id": "question1",
       "prompt": "שלום וברכה לכולם",
       "options": [
-        { "name": "Model 1", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "Model 2", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "Model 3", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "Model 4", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "Model 5", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "Model 6", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "Model 7", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" }
+        { "name": "1", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "2", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "3", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "4", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "5", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "6", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "7", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" }
+      ]
+    },
+        {
+      "id": "question2",
+      "prompt": "שלום וברכה לכולם",
+      "options": [
+        { "name": "1", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "2", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "3", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "4", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "5", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "6", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
+        { "name": "7", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" }
       ]
     }
   ]
