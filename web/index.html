@@ -228,12 +228,18 @@
         const data = Object.fromEntries(new FormData(form).entries());
         console.log("User submission:", data);
         
+        // Show warning message before sending
+        const warningMessage = lang === "he" 
+          ? "שולח נתונים... אנא אל תסגור את הדפדפן עד שתראה הודעת תודה!"
+          : "Sending data... Please don't close the browser until you see the thank you message!";
+        alert(warningMessage);
+        
         // Send to JSONBin
         fetch('https://api.jsonbin.io/v3/b', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Master-Key': config.jsonbin_key
+            'X-Master-Key': '$2a$10$BE5nbqzhxX9aDpbKIn.UG.66NOrkJR.1y1wi9kBCXmd0OIBS433Cq'
           },
           body: JSON.stringify({
             timestamp: new Date().toISOString(),
@@ -249,7 +255,10 @@
         })
         .catch(error => {
           console.error('Error saving data:', error);
-          alert('Error saving data. Please try again.');
+          const errorMessage = lang === "he"
+            ? "שגיאה בשמירת הנתונים. אנא נסה שוב."
+            : "Error saving data. Please try again.";
+          alert(errorMessage);
         });
       };
 
