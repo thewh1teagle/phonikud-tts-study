@@ -15,8 +15,8 @@
   "labels": {
     "name": { "en": "Name", "he": "שם" },
     "email": { "en": "Email", "he": "דוא\"ל" },
-    "natural": { "en": "Most natural", "he": "הכי טבעי" },
-    "pronunciation": { "en": "Best pronunciation", "he": "הגייה הטובה ביותר" },
+    "natural": { "en": "Most natural", "he": "טבעי/אנושי" },
+    "pronunciation": { "en": "Best pronunciation", "he": "הגייה" },
     "submit": { "en": "Submit", "he": "שלח" }
   },
   "samples": [

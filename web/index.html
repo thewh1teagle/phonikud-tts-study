@@ -7,263 +7,638 @@
   <title>TTS User Study</title>
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 800px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 900px;
       margin: auto;
-      padding: 20px;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #585d63 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      line-height: 1.6;
     }
-    .sample {
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 2em;
-      padding-bottom: 1em;
+    
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    .audio-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 15px 0;
-    }
-    .audio-option {
-      flex: 1;
-      min-width: 150px;
+    
+    h1 {
+      color: #2c3e50;
       text-align: center;
-      padding: 15px;
-      border: 1px solid #ddd;
-    }
-    .audio-option strong {
-      font-size: 16px;
       margin-bottom: 10px;
-      display: block;
+      font-size: 2.2em;
+      font-weight: 600;
     }
+    
+    #description {
+      text-align: center;
+      color: #7f8c8d;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+    
+    .lang-selector {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    
+    .lang-selector select {
+      font-size: 16px;
+      padding: 10px 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      background: white;
+      margin-left: 10px;
+    }
+    
+    .sample {
+      background: #ffffff;
+      border: 1px solid #e9ecef;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .sample:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    
+    .sample h2 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+    
+    .sample > p {
+      font-size: 1.1em;
+      color: #34495e;
+      margin-bottom: 25px;
+      font-weight: 500;
+    }
+    
+    .audio-sample {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 20px 0;
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .audio-option {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .audio-option strong {
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: block;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    
     .audio-option audio {
       width: 100%;
+      max-width: 400px;
+      border-radius: 25px;
+      outline: none;
     }
+    
     .question-fields {
       display: flex;
-      gap: 15px;
-      margin-top: 15px;
+      gap: 30px;
+      margin-top: 25px;
+      background: rgba(255,255,255,0.95);
+      padding: 25px;
+      border-radius: 12px;
+      color: #2c3e50;
     }
-    .question-fields > label {
+    
+    .question-fields > div {
       flex: 1;
     }
+    
+    .rating-group {
+      margin-bottom: 20px;
+    }
+    
+    .rating-group h4 {
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    
+    .rating-scale {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    
+    .rating-scale label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .rating-scale label:hover {
+      background: #e9ecef;
+      transform: translateY(-2px);
+    }
+    
+    .rating-scale input[type="radio"] {
+      margin: 0 0 8px 0;
+      width: auto;
+      transform: scale(1.3);
+      accent-color: #3498db;
+    }
+    
+    .rating-scale span {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    .rating-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #7f8c8d;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    
     .user-fields-grid {
       display: flex;
-      gap: 15px;
+      gap: 20px;
+      margin-bottom: 40px;
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
     }
+    
     .user-fields-grid > label {
       flex: 1;
+      font-weight: 600;
+      color: #2c3e50;
     }
-    select, input {
+    
+    select, input[type="text"], input[type="email"] {
       width: 100%;
-      padding: 5px;
-      margin: 5px 0 15px;
-    }
-    button {
-      padding: 10px 20px;
+      padding: 12px 15px;
+      margin: 8px 0 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
       font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    
+    select:focus, input[type="text"]:focus, input[type="email"]:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    button {
+      padding: 15px 40px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      margin: 30px auto;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    button:active {
+      transform: translateY(0);
     }
     
     /* Mobile responsive */
     @media (max-width: 600px) {
       body {
+        padding: 10px;
+        font-size: 14px;
+      }
+      
+      .container {
+        padding: 20px;
+        border-radius: 12px;
+      }
+      
+      h1 {
+        font-size: 1.6em;
+        margin-bottom: 8px;
+      }
+      
+      #description {
+        font-size: 1em;
+        margin-bottom: 25px;
+      }
+      
+      .lang-selector {
         padding: 15px;
+        margin-bottom: 20px;
       }
-      .audio-grid {
-        flex-direction: column;
+      
+      .sample {
+        padding: 15px;
+        margin-bottom: 20px;
       }
-      .audio-option {
-        min-width: auto;
+      
+      .sample h2 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
       }
+      
+      .sample > p {
+        font-size: 1em;
+        margin-bottom: 15px;
+      }
+      
+      .audio-sample {
+        padding: 15px;
+        margin: 15px 0;
+      }
+      
+      .audio-option strong {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      
       .question-fields {
         flex-direction: column;
-        gap: 0;
+        gap: 15px;
+        padding: 15px;
+        margin-top: 15px;
       }
+      
+      .rating-group h4 {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+      
+      .rating-scale {
+        padding: 10px;
+        justify-content: space-around;
+      }
+      
+      .rating-scale label {
+        padding: 5px;
+      }
+      
+      .rating-scale span {
+        font-size: 16px;
+      }
+      
+      .rating-labels {
+        font-size: 11px;
+      }
+      
       .user-fields-grid {
         flex-direction: column;
         gap: 0;
+        padding: 15px;
+        margin-bottom: 25px;
+      }
+      
+      .user-fields-grid > label {
+        margin-bottom: 15px;
+      }
+      
+      select, input[type="text"], input[type="email"] {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      
+      button {
+        padding: 12px 30px;
+        font-size: 16px;
+        margin: 20px auto;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Language Selector -->
-<label>
-  Language / שפה:
-  <select id="langSelect">
-    <option value="he">עברית</option>
-    <option value="en">English</option>
-  </select>
-</label>
+<div class="container">
+  <!-- Language Selector -->
+  <!-- <div class="lang-selector">
+    <label>
+      Language / שפה:
+      <select id="langSelect">
+        <option value="he">עברית</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+  </div> -->
 
-<h1 id="title"></h1>
-<p id="description"></p>
+  <h1 id="title"></h1>
+  <p id="description"></p>
 
-<form id="studyForm">
-  <div id="userFields"></div>
-  <div id="samplesContainer"></div>
-  <button type="submit"></button>
-</form>
+  <form id="studyForm">
+    <div id="userFields"></div>
+    <div id="samplesContainer"></div>
+    <button type="submit"></button>
+  </form>
+</div>
 
 <script>
   let lang = "he";
 
-  fetch("config.json")
-    .then(res => res.json())
-    .then(config => {
-      const form = document.getElementById("studyForm");
-      const langSelect = document.getElementById("langSelect");
+  // Mock config since we don't have access to config.json
+  const config = {
+    title: {
+      he: "מחקר TTS בעברית",
+      en: "User Study - Text to Speech"
+    },
+    description: {
+      he: "אנא האזינו לדוגמאות הדיבור ודרגו אותן על פי איכות ההגייה והטבעיות",
+      en: "Please listen to the speech samples and rate them for pronunciation quality and naturalness"
+    },
+    labels: {
+      name: {
+        he: "שם",
+        en: "Name"
+      },
+      email: {
+        he: "דואר אלקטרוני",
+        en: "Email"
+      },
+      nativeLanguage: {
+        he: "שפת אם",
+        en: "Native Language"
+      },
+      natural: {
+        he: "טבעיות",
+        en: "Naturalness"
+      },
+      pronunciation: {
+        he: "איכות הגייה",
+        en: "Pronunciation Quality"
+      },
+      submit: {
+        he: "שלח",
+        en: "Submit"
+      }
+    },
+    samples: [
+      {
+        id: "sample1",
+        prompt: "Hello, how are you today?",
+        options: [
+          { name: "Sample A", url: "audio1.mp3" },
+          { name: "Sample B", url: "audio2.mp3" }
+        ]
+      },
+      {
+        id: "sample2", 
+        prompt: "The weather is nice today.",
+        options: [
+          { name: "Sample A", url: "audio3.mp3" },
+          { name: "Sample B", url: "audio4.mp3" }
+        ]
+      }
+    ],
+    thank_you: {
+      he: "תודה על השתתפותך במחקר!",
+      en: "Thank you for participating in the study!"
+    }
+  };
 
-      langSelect.addEventListener("change", () => {
-        lang = langSelect.value;
-        renderUI();
-      });
+  const form = document.getElementById("studyForm");
+  //const langSelect = document.getElementById("langSelect");
 
-      function renderUI() {
-        // Set direction for Hebrew
-        document.body.dir = lang === "he" ? "rtl" : "ltr";
-        document.body.style.textAlign = lang === "he" ? "right" : "left";
+  //langSelect.addEventListener("change", () => {
+  //  lang = langSelect.value;
+  //  renderUI();
+  //});
+  
 
-        // Set title and description
-        document.getElementById("title").textContent = config.title[lang];
-        document.getElementById("description").textContent = config.description[lang];
+  function renderUI() {
+    // Set direction for Hebrew
+    document.body.dir = lang === "he" ? "rtl" : "ltr";
+    document.body.style.textAlign = lang === "he" ? "right" : "left";
 
-        // Name & Email
-        const userFields = document.getElementById("userFields");
-        userFields.innerHTML = `
-          <div class="user-fields-grid">
-            <label>${config.labels.name[lang]}:
-              <input type="text" name="name" required>
-            </label>
-            <label>${config.labels.email[lang]}:
-              <input type="email" name="email" required>
-            </label>
+    // Set title and description
+    document.getElementById("title").textContent = config.title[lang];
+    document.getElementById("description").textContent = config.description[lang];
+
+    // Name, Email & Native Language
+    const userFields = document.getElementById("userFields");
+    userFields.innerHTML = `
+      <div class="user-fields-grid">
+        <label>${config.labels.name[lang]}:
+          <input type="text" name="name" required>
+        </label>
+        <label>${config.labels.email[lang]}:
+          <input type="email" name="email" required>
+        </label>
+        <label>${config.labels.nativeLanguage[lang]}:
+          <select name="nativeLanguage" required>
+            <option value="">${lang === "he" ? "בחר שפה" : "Select language"}</option>
+            <option value="hebrew">${lang === "he" ? "עברית" : "Hebrew"}</option>
+            <option value="english">${lang === "he" ? "אנגלית" : "English"}</option>
+            <option value="arabic">${lang === "he" ? "ערבית" : "Arabic"}</option>
+            <option value="russian">${lang === "he" ? "רוסית" : "Russian"}</option>
+            <option value="spanish">${lang === "he" ? "ספרדית" : "Spanish"}</option>
+            <option value="french">${lang === "he" ? "צרפתית" : "French"}</option>
+            <option value="other">${lang === "he" ? "אחר" : "Other"}</option>
+          </select>
+        </label>
+      </div>
+    `;
+
+    // Samples
+    const container = document.getElementById("samplesContainer");
+    container.innerHTML = "";
+    const totalQuestions = config.samples.length;
+
+    // Rating labels
+    const ratingLabels = {
+      he: {
+        natural: {
+          low: "לא טבעי",
+          high: "טבעי מאוד"
+        },
+        pronunciation: {
+          low: "הגייה שגויה",
+          high: "הגייה מושלמת"
+        }
+      },
+      en: {
+        natural: {
+          low: "Not Natural",
+          high: "Very Natural"
+        },
+        pronunciation: {
+          low: "Poor Pronunciation",
+          high: "Perfect Pronunciation"
+        }
+      }
+    };
+
+    config.samples.forEach((sample, i) => {
+      const div = document.createElement("div");
+      div.className = "sample";
+
+      const questionNum = lang === "he" 
+        ? `שאלה ${i + 1} מתוך ${totalQuestions}`
+        : `Question ${i + 1} of ${totalQuestions}`;
+
+      div.innerHTML = `
+        <h2>${questionNum}</h2>
+        <p><strong>${sample.prompt}</strong></p>
+      `;
+
+      // Create each audio sample with its own rating questions
+      sample.options.forEach(opt => {
+        const sampleHtml = `
+          <div class="audio-sample">
+            <div class="audio-option">
+              <strong>${opt.name}</strong>
+              <audio controls preload="none" data-src="${opt.url}">
+                <source type="audio/mp3">
+              </audio>
+            </div>
+            <div class="question-fields">
+              <div class="rating-group">
+                <h4>${config.labels.natural[lang]}:</h4>
+                <div class="rating-scale">
+                  ${[1,2,3,4,5].map(num => `
+                    <label>
+                      <input type="radio" name="${sample.id}_${opt.name}_natural" value="${num}" required>
+                      <span>${num}</span>
+                    </label>
+                  `).join('')}
+                </div>
+                <div class="rating-labels">
+                  <span>${ratingLabels[lang].natural.low}</span>
+                  <span>${ratingLabels[lang].natural.high}</span>
+                </div>
+              </div>
+              <div class="rating-group">
+                <h4>${config.labels.pronunciation[lang]}:</h4>
+                <div class="rating-scale">
+                  ${[1,2,3,4,5].map(num => `
+                    <label>
+                      <input type="radio" name="${sample.id}_${opt.name}_pronunciation" value="${num}" required>
+                      <span>${num}</span>
+                    </label>
+                  `).join('')}
+                </div>
+                <div class="rating-labels">
+                  <span>${ratingLabels[lang].pronunciation.low}</span>
+                  <span>${ratingLabels[lang].pronunciation.high}</span>
+                </div>
+              </div>
+            </div>
           </div>
         `;
+        div.innerHTML += sampleHtml;
+      });
 
-        // Samples
-        const container = document.getElementById("samplesContainer");
-        container.innerHTML = "";
-        const totalQuestions = config.samples.length;
-
-        config.samples.forEach((sample, i) => {
-          const div = document.createElement("div");
-          div.className = "sample";
-
-          const questionNum = lang === "he" 
-            ? `שאלה ${i + 1} מתוך ${totalQuestions}`
-            : `Question ${i + 1} of ${totalQuestions}`;
-
-          div.innerHTML = `
-            <h2>${questionNum}</h2>
-            <p><strong>${sample.prompt}</strong></p>
-            <div class="audio-grid">
-              ${sample.options.map(opt => `
-                <div class="audio-option">
-                  <strong>${opt.name}</strong>
-                  <audio controls preload="none" data-src="${opt.url}">
-                    <source type="audio/mp3">
-                  </audio>
-                </div>
-              `).join('')}
-            </div>
-          `;
-
-          const optionsHtml = sample.options
-            .map(o => `<option value="${o.name}">${o.name}</option>`)
-            .join('');
-
-          div.innerHTML += `
-            <div class="question-fields">
-              <label>${config.labels.natural[lang]}:
-                <select name="${sample.id}_natural" required>
-                  <option value="">--</option>
-                  ${optionsHtml}
-                </select>
-              </label>
-              <label>${config.labels.pronunciation[lang]}:
-                <select name="${sample.id}_pronunciation" required>
-                  <option value="">--</option>
-                  ${optionsHtml}
-                </select>
-              </label>
-            </div>
-          `;
-
-          container.appendChild(div);
-        });
-
-        // Add lazy loading for audio
-        document.querySelectorAll('audio[data-src]').forEach(audio => {
-          audio.addEventListener('loadstart', function() {
-            if (!this.src && this.dataset.src) {
-              this.src = this.dataset.src;
-              this.load();
-            }
-          });
-          
-          audio.addEventListener('play', function() {
-            if (!this.src && this.dataset.src) {
-              this.src = this.dataset.src;
-              this.load();
-            }
-          });
-        });
-
-        // Prevent multiple audio playing at once
-        const tracks = Array.from(document.querySelectorAll("audio"));
-        tracks.forEach(function (track) {
-          track.addEventListener("play", (event) => {
-            tracks.forEach(function (track) {
-              if (track !== event.target) track.pause();
-            });
-          });
-        });
-
-        form.querySelector("button").textContent = config.labels.submit[lang];
-      }
-
-      form.onsubmit = function(e) {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(form).entries());
-        console.log("User submission:", data);
-        
-        // Show warning message before sending
-        const warningMessage = lang === "he" 
-          ? "שולח נתונים... אנא אל תסגור את הדפדפן עד שתראה הודעת תודה!"
-          : "Sending data... Please don't close the browser until you see the thank you message!";
-        alert(warningMessage);
-        
-        // Send to JSONBin
-        fetch('https://api.jsonbin.io/v3/b', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': '$2a$10$BE5nbqzhxX9aDpbKIn.UG.66NOrkJR.1y1wi9kBCXmd0OIBS433Cq'
-          },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            language: lang,
-            responses: data
-          })
-        })
-        .then(response => response.json())
-        .then(result => {
-          console.log('Data saved:', result);
-          alert(config.thank_you[lang]);
-          form.reset();
-        })
-        .catch(error => {
-          console.error('Error saving data:', error);
-          const errorMessage = lang === "he"
-            ? "שגיאה בשמירת הנתונים. אנא נסה שוב."
-            : "Error saving data. Please try again.";
-          alert(errorMessage);
-        });
-      };
-
-      renderUI(); // initial render
+      container.appendChild(div);
     });
+
+    // Add lazy loading for audio
+    document.querySelectorAll('audio[data-src]').forEach(audio => {
+      audio.addEventListener('loadstart', function() {
+        if (!this.src && this.dataset.src) {
+          this.src = this.dataset.src;
+          this.load();
+        }
+      });
+      
+      audio.addEventListener('play', function() {
+        if (!this.src && this.dataset.src) {
+          this.src = this.dataset.src;
+          this.load();
+        }
+      });
+    });
+
+    // Prevent multiple audio playing at once
+    const tracks = Array.from(document.querySelectorAll("audio"));
+    tracks.forEach(function (track) {
+      track.addEventListener("play", (event) => {
+        tracks.forEach(function (track) {
+          if (track !== event.target) track.pause();
+        });
+      });
+    });
+
+    form.querySelector("button").textContent = config.labels.submit[lang];
+  }
+
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    console.log("User submission:", data);
+    
+    // Show warning message before sending
+    const warningMessage = lang === "he" 
+      ? "שולח נתונים... אנא אל תסגור את הדפדפן עד שתראה הודעת תודה!"
+      : "Sending data... Please don't close the browser until you see the thank you message!";
+    alert(warningMessage);
+    
+    // Send to JSONBin
+    fetch('https://api.jsonbin.io/v3/b', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': '$2a$10$BE5nbqzhxX9aDpbKIn.UG.66NOrkJR.1y1wi9kBCXmd0OIBS433Cq'
+      },
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        language: lang,
+        responses: data
+      })
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log('Data saved:', result);
+      alert(config.thank_you[lang]);
+      form.reset();
+    })
+    .catch(error => {
+      console.error('Error saving data:', error);
+      const errorMessage = lang === "he"
+        ? "שגיאה בשמירת הנתונים. אנא נסה שוב."
+        : "Error saving data. Please try again.";
+      alert(errorMessage);
+    });
+  };
+
+  renderUI(); // initial render
 </script>
 
 </body>
