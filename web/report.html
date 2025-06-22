@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Study Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1, h2, h3 {
+            color: #333;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .model-card {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .model-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .model-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .ranking {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .ranking h4 {
+            margin: 0 0 10px 0;
+            color: #856404;
+        }
+        
+        .ranking ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .insights {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .insights h3 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .insight-item {
+            margin: 8px 0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TTS Study Report</h1>
+        
+        <div id="loading" class="loading">
+            Loading report data...
+        </div>
+        
+        <div id="error" class="error" style="display: none;">
+        </div>
+        
+        <div id="report" style="display: none;">
+            <div class="section">
+                <h2>Study Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-submissions">0</div>
+                        <div class="stat-label">Total Submissions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-questions">0</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-models">0</div>
+                        <div class="stat-label">Models</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avg-satisfaction">0%</div>
+                        <div class="stat-label">Avg Satisfaction</div>
+                    </div>
+                </div>
+                
+                <div id="language-distribution"></div>
+            </div>
+            
+            <div class="section">
+                <h2>Research Insights</h2>
+                <div class="insights" id="insights">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Model Rankings</h2>
+                <div class="stats-grid">
+                    <div class="ranking">
+                        <h4>🏆 By Combined Score</h4>
+                        <ol id="ranking-combined"></ol>
+                    </div>
+                    <div class="ranking">
+                        <h4>🎯 By Naturalness</h4>
+                        <ol id="ranking-naturalness"></ol>
+                    </div>
+                    <div class="ranking">
+                        <h4>🗣️ By Pronunciation</h4>
+                        <ol id="ranking-pronunciation"></ol>
+                    </div>
+                    <div class="ranking">
+                        <h4>📊 By Satisfaction</h4>
+                        <ol id="ranking-satisfaction"></ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Model Details</h2>
+                <div id="model-details">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://snkbgibsrfcioeedwvph.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNua2JnaWJzcmZjaW9lZWR3dnBoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDU0OTM5NSwiZXhwIjoyMDY2MTI1Mzk1fQ.4ZJ09p_CKTP1sPdJI_x6JsTaD9QR7-n3-6FOQISU7r8';
+        const TABLE_NAME = 'phonikud-user-study';
+
+        async function fetchSupabaseData() {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=*`, {
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return await response.json();
+        }
+
+        function calculateStats(values) {
+            if (values.length === 0) return { mean: 0, median: 0, stdDev: 0 };
+            
+            const sorted = [...values].sort((a, b) => a - b);
+            const mean = values.reduce((a, b) => a + b, 0) / values.length;
+            const median = sorted.length % 2 === 0 
+                ? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
+                : sorted[Math.floor(sorted.length / 2)];
+            
+            const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
+            const stdDev = Math.sqrt(variance);
+            
+            return { mean, median, stdDev };
+        }
+
+        function analyzeSubmissions(submissions) {
+            const allResponses = submissions.map(s => s.data).filter(Boolean);
+            
+            if (allResponses.length === 0) {
+                return { error: "No valid submissions found", total_submissions: 0 };
+            }
+
+            const modelStats = {};
+            const userLanguages = {};
+            const questionsAnalyzed = new Set();
+
+            // Process each submission
+            allResponses.forEach(submission => {
+                const userInfo = submission.user || {};
+                const responses = submission.responses || {};
+                
+                // Count user languages
+                const nativeLang = userInfo.native_language || 'unknown';
+                userLanguages[nativeLang] = (userLanguages[nativeLang] || 0) + 1;
+                
+                // Process responses
+                Object.entries(responses).forEach(([questionId, questionData]) => {
+                    questionsAnalyzed.add(questionId);
+                    const ratings = questionData.ratings || {};
+                    
+                    Object.entries(ratings).forEach(([modelId, ratingData]) => {
+                        if (!modelStats[modelId]) {
+                            modelStats[modelId] = {
+                                naturalness_scores: [],
+                                pronunciation_scores: [],
+                                total_ratings: 0
+                            };
+                        }
+                        
+                        const naturalness = ratingData.naturalness;
+                        const pronunciation = ratingData.pronunciation;
+                        
+                        if (naturalness !== null && pronunciation !== null) {
+                            modelStats[modelId].naturalness_scores.push(naturalness);
+                            modelStats[modelId].pronunciation_scores.push(pronunciation);
+                            modelStats[modelId].total_ratings++;
+                        }
+                    });
+                });
+            });
+
+            // Calculate summary statistics
+            const modelSummary = {};
+            Object.entries(modelStats).forEach(([modelId, stats]) => {
+                const natScores = stats.naturalness_scores;
+                const pronScores = stats.pronunciation_scores;
+                
+                if (natScores.length > 0 && pronScores.length > 0) {
+                    const totalRatings = stats.total_ratings;
+                    const natStats = calculateStats(natScores);
+                    const pronStats = calculateStats(pronScores);
+                    const combinedMean = (natStats.mean + pronStats.mean) / 2;
+                    
+                    // Calculate satisfaction levels
+                    const natSatisfied = natScores.filter(score => score >= 4).length;
+                    const natUnsatisfied = natScores.filter(score => score <= 2).length;
+                    const pronSatisfied = pronScores.filter(score => score >= 4).length;
+                    const pronUnsatisfied = pronScores.filter(score => score <= 2).length;
+                    
+                    modelSummary[modelId] = {
+                        total_ratings: totalRatings,
+                        naturalness: {
+                            mean: Math.round(natStats.mean * 100) / 100,
+                            median: natStats.median,
+                            std_dev: Math.round(natStats.stdDev * 100) / 100,
+                            percentage_score: Math.round((natStats.mean / 5) * 1000) / 10,
+                            satisfaction_rate: Math.round((natSatisfied / totalRatings) * 1000) / 10,
+                            dissatisfaction_rate: Math.round((natUnsatisfied / totalRatings) * 1000) / 10,
+                            scores_distribution: [1,2,3,4,5].reduce((acc, i) => {
+                                acc[i] = natScores.filter(score => score === i).length;
+                                return acc;
+                            }, {}),
+                            scores_distribution_percent: [1,2,3,4,5].reduce((acc, i) => {
+                                acc[i] = Math.round((natScores.filter(score => score === i).length / totalRatings) * 1000) / 10;
+                                return acc;
+                            }, {})
+                        },
+                        pronunciation: {
+                            mean: Math.round(pronStats.mean * 100) / 100,
+                            median: pronStats.median,
+                            std_dev: Math.round(pronStats.stdDev * 100) / 100,
+                            percentage_score: Math.round((pronStats.mean / 5) * 1000) / 10,
+                            satisfaction_rate: Math.round((pronSatisfied / totalRatings) * 1000) / 10,
+                            dissatisfaction_rate: Math.round((pronUnsatisfied / totalRatings) * 1000) / 10,
+                            scores_distribution: [1,2,3,4,5].reduce((acc, i) => {
+                                acc[i] = pronScores.filter(score => score === i).length;
+                                return acc;
+                            }, {}),
+                            scores_distribution_percent: [1,2,3,4,5].reduce((acc, i) => {
+                                acc[i] = Math.round((pronScores.filter(score => score === i).length / totalRatings) * 1000) / 10;
+                                return acc;
+                            }, {})
+                        },
+                        combined_score: Math.round(combinedMean * 100) / 100,
+                        combined_percentage: Math.round((combinedMean / 5) * 1000) / 10,
+                        overall_satisfaction: Math.round(((natSatisfied + pronSatisfied) / (totalRatings * 2)) * 1000) / 10,
+                        improvement_potential: Math.round((5 - combinedMean) * 200) / 10
+                    };
+                }
+            });
+
+            // Create rankings
+            const models = Object.entries(modelSummary);
+            const rankings = {
+                by_naturalness: models.sort((a, b) => b[1].naturalness.mean - a[1].naturalness.mean),
+                by_pronunciation: models.sort((a, b) => b[1].pronunciation.mean - a[1].pronunciation.mean),
+                by_combined_score: models.sort((a, b) => b[1].combined_score - a[1].combined_score),
+                by_satisfaction: models.sort((a, b) => b[1].overall_satisfaction - a[1].overall_satisfaction)
+            };
+
+            // Calculate insights
+            let insights = {};
+            if (models.length > 0) {
+                const best = rankings.by_combined_score[0];
+                const worst = rankings.by_combined_score[rankings.by_combined_score.length - 1];
+                const avgSatisfaction = models.reduce((sum, [, data]) => sum + data.overall_satisfaction, 0) / models.length;
+                
+                insights = {
+                    best_overall_model: best[0],
+                    best_naturalness_model: rankings.by_naturalness[0][0],
+                    best_pronunciation_model: rankings.by_pronunciation[0][0],
+                    performance_gaps: {
+                        overall: Math.round((best[1].combined_score - worst[1].combined_score) * 100) / 100,
+                        naturalness: Math.round((rankings.by_naturalness[0][1].naturalness.mean - rankings.by_naturalness[rankings.by_naturalness.length - 1][1].naturalness.mean) * 100) / 100,
+                        pronunciation: Math.round((rankings.by_pronunciation[0][1].pronunciation.mean - rankings.by_pronunciation[rankings.by_pronunciation.length - 1][1].pronunciation.mean) * 100) / 100
+                    },
+                    average_satisfaction_rate: Math.round(avgSatisfaction * 10) / 10,
+                    models_above_average: models.filter(([, data]) => data.overall_satisfaction > avgSatisfaction).map(([model]) => model)
+                };
+            }
+
+            return {
+                total_submissions: allResponses.length,
+                total_questions: questionsAnalyzed.size,
+                total_models: Object.keys(modelSummary).length,
+                user_language_distribution: userLanguages,
+                models_summary: modelSummary,
+                rankings,
+                research_insights: insights
+            };
+        }
+
+        function displayReport(analysis) {
+            // Show main stats
+            document.getElementById('total-submissions').textContent = analysis.total_submissions;
+            document.getElementById('total-questions').textContent = analysis.total_questions;
+            document.getElementById('total-models').textContent = analysis.total_models;
+            document.getElementById('avg-satisfaction').textContent = 
+                analysis.research_insights.average_satisfaction_rate ? 
+                `${analysis.research_insights.average_satisfaction_rate}%` : '0%';
+
+            // Language distribution
+            const langDiv = document.getElementById('language-distribution');
+            langDiv.innerHTML = '<h3>User Language Distribution</h3>';
+            Object.entries(analysis.user_language_distribution).forEach(([lang, count]) => {
+                langDiv.innerHTML += `<div class="stat-card"><div class="stat-value">${count}</div><div class="stat-label">${lang}</div></div>`;
+            });
+
+            // Research insights
+            const insights = analysis.research_insights;
+            if (insights.best_overall_model) {
+                document.getElementById('insights').innerHTML = `
+                    <h3>Key Findings</h3>
+                    <div class="insight-item">🏆 Best Overall Model: <strong>${insights.best_overall_model}</strong></div>
+                    <div class="insight-item">🎯 Best for Naturalness: <strong>${insights.best_naturalness_model}</strong></div>
+                    <div class="insight-item">🗣️ Best for Pronunciation: <strong>${insights.best_pronunciation_model}</strong></div>
+                    <div class="insight-item">📊 Average Satisfaction: <strong>${insights.average_satisfaction_rate}%</strong></div>
+                    <div class="insight-item">🔝 Above Average Models: <strong>${insights.models_above_average.join(', ')}</strong></div>
+                    <div class="insight-item">📈 Performance Gap: <strong>${insights.performance_gaps.overall} points</strong></div>
+                `;
+            }
+
+            // Rankings
+            ['combined', 'naturalness', 'pronunciation', 'satisfaction'].forEach(type => {
+                const list = document.getElementById(`ranking-${type}`);
+                const key = `by_${type === 'combined' ? 'combined_score' : type}`;
+                const rankings = analysis.rankings[key];
+                
+                list.innerHTML = rankings.map(([model, score]) => {
+                    const value = type === 'satisfaction' ? `${score}%` : 
+                                 type === 'combined' ? score : score;
+                    return `<li>${model}: ${value}</li>`;
+                }).join('');
+            });
+
+            // Model details
+            const modelDetails = document.getElementById('model-details');
+            modelDetails.innerHTML = Object.entries(analysis.models_summary).map(([model, data]) => `
+                <div class="model-card">
+                    <div class="model-name">${model.toUpperCase()}</div>
+                    <div class="model-stats">
+                        <div><strong>Combined Score:</strong> ${data.combined_score}/5 (${data.combined_percentage}%)</div>
+                        <div><strong>Naturalness:</strong> ${data.naturalness.percentage_score}%</div>
+                        <div><strong>Pronunciation:</strong> ${data.pronunciation.percentage_score}%</div>
+                        <div><strong>Overall Satisfaction:</strong> ${data.overall_satisfaction}%</div>
+                        <div><strong>Total Ratings:</strong> ${data.total_ratings}</div>
+                        <div><strong>Improvement Potential:</strong> ${data.improvement_potential}%</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Show report
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('report').style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error').textContent = `Error: ${message}`;
+        }
+
+        // Load and display report
+        async function loadReport() {
+            try {
+                const submissions = await fetchSupabaseData();
+                const analysis = analyzeSubmissions(submissions);
+                
+                if (analysis.error) {
+                    showError(analysis.error);
+                } else {
+                    displayReport(analysis);
+                }
+            } catch (error) {
+                console.error('Error loading report:', error);
+                showError(error.message);
+            }
+        }
+
+        // Load report when page loads
+        loadReport();
+    </script>
+</body>
+</html> 
