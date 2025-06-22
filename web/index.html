@@ -98,7 +98,6 @@
       margin-bottom: 30px;
       display: none;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      animation: slideInFromTop 0.6s ease-out;
     }
 
     @keyframes slideInFromTop {
@@ -485,7 +484,7 @@
       <button type="button" class="continue-btn" id="continueBtn" disabled>המשך למחקר</button>
     </div>
 
-    <div class="rating-instructions pulse" id="ratingInstructions">
+    <div class="rating-instructions" id="ratingInstructions">
       <h3>🎧 הוראות למתן דירוגים - קראו בעינים!</h3>
       
       <div class="instruction-item" id="instruction1">
@@ -585,10 +584,7 @@ function showQuestions() {
     block: 'start'
   });
   
-  // Remove pulse animation after a few seconds to reduce distraction
-  setTimeout(() => {
-    document.getElementById('ratingInstructions').classList.remove('pulse');
-  }, 4000);
+
 }
 
 // Check instructions progress
