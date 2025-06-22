@@ -1,49 +1,50 @@
 {
-  "jsonbin_key": "$2a$10$g.w9lYdEPSiu28fnvKdDJeTzVgDByqIhui2IlqiSGSvgP6T.I1eqi",
-  "title": {
-    "en": "Hebrew TTS Study",
-    "he": "מחקר TTS בעברית"
+  "supabase": {
+    "url": "https://snkbgibsrfcioeedwvph.supabase.co",
+    "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNua2JnaWJzcmZjaW9lZWR3dnBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1NDkzOTUsImV4cCI6MjA2NjEyNTM5NX0.YUUSKNRa4JysEAGq3i7BoeXtrYv9Ep7ZtNiEusW7vu4",
+    "table_name": "phonikud-user-study"
   },
-  "description": {
-    "en": "Please listen to the audio samples and answer the questions below.",
-    "he": "אנא האזן לדוגמאות הקוליות וענה על השאלות שלמטה."
-  },
-  "thank_you": {
-    "en": "Thank you for participating!",
-    "he": "תודה על ההשתתפות! ❤️"
-  },
+
+  "title": "מחקר TTS - דירוג איכות דיבור",
+  "description": "אנא האזינו לדוגמאות הקוליות ודרגו כל מודל על פי טבעיות ומבטא מ-1 עד 5",
+  "thank_you": "תודה על ההשתתפות במחקר! ❤️",
   "labels": {
-    "name": { "en": "Name", "he": "שם" },
-    "email": { "en": "Email", "he": "דוא\"ל" },
-    "natural": { "en": "Most natural", "he": "טבעי/אנושי" },
-    "pronunciation": { "en": "Best pronunciation", "he": "הגייה" },
-    "submit": { "en": "Submit", "he": "שלח" }
+    "name": "שם",
+    "email": "דוא\"ל",
+    "native_language": "שפת אם",
+    "naturalness": "טבעיות",
+    "pronunciation": "מבטא",
+    "submit": "שלח"
+  },
+  "rating_labels": {
+    "naturalness": {
+      "low": "לא טבעי",
+      "high": "טבעי מאוד"
+    },
+    "pronunciation": {
+      "low": "מבטא גרוע", 
+      "high": "מבטא מעולה"
+    }
   },
   "samples": [
     {
       "id": "question1",
       "prompt": "שלום וברכה לכולם",
-      "options": [
-        { "name": "1", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "2", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "3", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "4", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "5", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "6", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "7", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" }
+      "models": [
+        { "id": "google", "name": "google", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" },
+        { "id": "microsoft", "name": "microsoft", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" },
+        { "id": "ours-piper", "name": "ours-piper", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" },
+        { "id": "ours-styletts2", "name": "ours-styletts2", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" }
       ]
     },
-        {
-      "id": "question2",
-      "prompt": "שלום וברכה לכולם",
-      "options": [
-        { "name": "1", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "2", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "3", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "4", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "5", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "6", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" },
-        { "name": "7", "url": "https://phonikud-paper.netlify.app/samples/phonikud_1.wav" }
+    {
+      "id": "question2", 
+      "prompt": "איך אתה מרגיש היום?",
+      "models": [
+        { "id": "google", "name": "google", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" },
+        { "id": "microsoft", "name": "microsoft", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" },
+        { "id": "ours-piper", "name": "ours-piper", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" },
+        { "id": "ours-styletts2", "name": "ours-styletts2", "url": "https://thewh1teagle.github.io/phonikud-paper/samples/phonikud_1.opus" }
       ]
     }
   ]

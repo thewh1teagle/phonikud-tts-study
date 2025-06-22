@@ -1,151 +1,165 @@
 <!-- TODO: set samples from https://huggingface.co/thewh1teagle/phonikud-experiments/tree/main/uset-study/audio -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TTS User Study</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מחקר TTS</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      max-width: 900px;
-      margin: auto;
-      padding: 30px 20px;
-      background: linear-gradient(135deg, #585d63 0%, #c3cfe2 100%);
-      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
       line-height: 1.6;
+      direction: rtl;
+      text-align: right;
     }
     
     .container {
       background: white;
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
     h1 {
-      color: #2c3e50;
+      color: #333;
       text-align: center;
       margin-bottom: 10px;
-      font-size: 2.2em;
-      font-weight: 600;
+      font-size: 2em;
     }
     
-    #description {
+    .description {
       text-align: center;
-      color: #7f8c8d;
-      margin-bottom: 40px;
+      color: #666;
+      margin-bottom: 30px;
       font-size: 1.1em;
     }
     
-    .lang-selector {
-      text-align: center;
-      margin-bottom: 30px;
+    .user-info {
+      background: #f9f9f9;
       padding: 20px;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
-    
-    .lang-selector select {
-      font-size: 16px;
-      padding: 10px 15px;
-      border: 2px solid #e9ecef;
       border-radius: 8px;
-      background: white;
-      margin-left: 10px;
-    }
-    
-    .sample {
-      background: #ffffff;
-      border: 1px solid #e9ecef;
-      border-radius: 12px;
       margin-bottom: 30px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
     }
     
-    .sample:hover {
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    }
-    
-    .sample h2 {
-      color: #2c3e50;
-      border-bottom: 3px solid #3498db;
-      padding-bottom: 10px;
+    .user-info label {
+      display: block;
       margin-bottom: 15px;
-      font-size: 1.5em;
+      font-weight: bold;
     }
     
-    .sample > p {
-      font-size: 1.1em;
-      color: #34495e;
-      margin-bottom: 25px;
-      font-weight: 500;
+    .user-info input, .user-info select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
     }
     
-    .audio-sample {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 12px;
+    .question {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      margin-bottom: 30px;
       padding: 25px;
-      margin: 20px 0;
-      color: white;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
     }
     
-    .audio-option {
+    .question.completed {
+      border-color: #28a745;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.1);
+    }
+    
+    .question-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #3498db;
+    }
+    
+    .question-title {
+      color: #2c3e50;
+      font-size: 1.3em;
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    .progress-indicator {
+      background: #28a745;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9em;
+      box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    }
+    
+    .prompt {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #2c3e50;
       text-align: center;
+      background: #ecf0f1;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+    
+    .model {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    
+    .model-header {
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #495057;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    audio {
+      width: 100%;
       margin-bottom: 20px;
     }
     
-    .audio-option strong {
-      font-size: 18px;
-      margin-bottom: 15px;
-      display: block;
-      color: #ffffff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-    
-    .audio-option audio {
-      width: 100%;
-      max-width: 400px;
-      border-radius: 25px;
-      outline: none;
-    }
-    
-    .question-fields {
+    .ratings {
       display: flex;
       gap: 30px;
-      margin-top: 25px;
-      background: rgba(255,255,255,0.95);
-      padding: 25px;
-      border-radius: 12px;
-      color: #2c3e50;
-    }
-    
-    .question-fields > div {
-      flex: 1;
+      justify-content: space-around;
     }
     
     .rating-group {
-      margin-bottom: 20px;
+      flex: 1;
     }
     
     .rating-group h4 {
-      margin-bottom: 15px;
-      font-size: 16px;
+      margin-bottom: 10px;
       color: #2c3e50;
-      font-weight: 600;
+      text-align: center;
     }
     
     .rating-scale {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 10px;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 5px;
     }
     
     .rating-scale label {
@@ -153,196 +167,108 @@
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
-      transition: all 0.2s ease;
+      padding: 5px;
+      border-radius: 5px;
+      transition: all 0.2s;
     }
     
     .rating-scale label:hover {
-      background: #e9ecef;
-      transform: translateY(-2px);
+      background: #ced4da;
+      transform: scale(1.05);
     }
     
-    .rating-scale input[type="radio"] {
-      margin: 0 0 8px 0;
-      width: auto;
-      transform: scale(1.3);
-      accent-color: #3498db;
+    .rating-scale input:checked + span {
+      color: #007bff;
+      font-weight: bold;
+    }
+    
+    .rating-scale input {
+      margin-bottom: 5px;
     }
     
     .rating-scale span {
-      font-size: 18px;
+      font-size: 1.1em;
       font-weight: bold;
-      color: #2c3e50;
     }
     
     .rating-labels {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      color: #7f8c8d;
-      margin-top: 8px;
+      font-size: 0.85em;
+      color: #6c757d;
       font-style: italic;
     }
     
-    .user-fields-grid {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 40px;
-      background: #f8f9fa;
-      padding: 25px;
-      border-radius: 12px;
+    .submit-container {
+      text-align: center;
+      margin-top: 40px;
     }
     
-    .user-fields-grid > label {
-      flex: 1;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-    
-    select, input[type="text"], input[type="email"] {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 8px 0 15px;
-      border: 2px solid #e9ecef;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: border-color 0.3s ease;
-    }
-    
-    select:focus, input[type="text"]:focus, input[type="email"]:focus {
-      outline: none;
-      border-color: #3498db;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
-    
-    button {
-      padding: 15px 40px;
-      font-size: 18px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .submit-btn {
+      background: #28a745;
       color: white;
       border: none;
-      border-radius: 10px;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      display: block;
-      margin: 30px auto;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      transition: background-color 0.3s;
     }
     
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    .submit-btn:hover {
+      background: #218838;
     }
     
-    button:active {
-      transform: translateY(0);
+    .warning {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      color: #856404;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
     }
     
-    /* Mobile responsive */
-    @media (max-width: 600px) {
+    .completion-indicator {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #28a745;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .question.completed .completion-indicator {
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
       body {
         padding: 10px;
-        font-size: 14px;
       }
       
       .container {
         padding: 20px;
-        border-radius: 12px;
       }
       
-      h1 {
-        font-size: 1.6em;
-        margin-bottom: 8px;
-      }
-      
-      #description {
-        font-size: 1em;
-        margin-bottom: 25px;
-      }
-      
-      .lang-selector {
-        padding: 15px;
-        margin-bottom: 20px;
-      }
-      
-      .sample {
-        padding: 15px;
-        margin-bottom: 20px;
-      }
-      
-      .sample h2 {
-        font-size: 1.2em;
-        margin-bottom: 10px;
-      }
-      
-      .sample > p {
-        font-size: 1em;
-        margin-bottom: 15px;
-      }
-      
-      .audio-sample {
-        padding: 15px;
-        margin: 15px 0;
-      }
-      
-      .audio-option strong {
-        font-size: 16px;
-        margin-bottom: 10px;
-      }
-      
-      .question-fields {
+      .question-header {
         flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-        margin-top: 15px;
+        gap: 10px;
+        text-align: center;
       }
       
-      .rating-group h4 {
-        font-size: 14px;
-        margin-bottom: 10px;
+      .ratings {
+        flex-direction: column;
+        gap: 20px;
       }
       
       .rating-scale {
-        padding: 10px;
         justify-content: space-around;
-      }
-      
-      .rating-scale label {
-        padding: 5px;
-      }
-      
-      .rating-scale span {
-        font-size: 16px;
-      }
-      
-      .rating-labels {
-        font-size: 11px;
-      }
-      
-      .user-fields-grid {
-        flex-direction: column;
-        gap: 0;
-        padding: 15px;
-        margin-bottom: 25px;
-      }
-      
-      .user-fields-grid > label {
-        margin-bottom: 15px;
-      }
-      
-      select, input[type="text"], input[type="email"] {
-        padding: 10px 12px;
-        font-size: 14px;
-      }
-      
-      button {
-        padding: 12px 30px;
-        font-size: 16px;
-        margin: 20px auto;
       }
     }
   </style>
@@ -350,295 +276,294 @@
 <body>
 
 <div class="container">
-  <!-- Language Selector -->
-  <!-- <div class="lang-selector">
-    <label>
-      Language / שפה:
-      <select id="langSelect">
-        <option value="he">עברית</option>
-        <option value="en">English</option>
-      </select>
-    </label>
-  </div> -->
-
-  <h1 id="title"></h1>
-  <p id="description"></p>
-
+  <div class="warning">
+    ⚠️ חשוב: אל תסגרו את הדפדפן במהלך המחקר עד לקבלת הודעת האישור!
+  </div>
+  
+  <h1 id="title">טוען...</h1>
+  <div class="description" id="description">טוען...</div>
+  
   <form id="studyForm">
-    <div id="userFields"></div>
-    <div id="samplesContainer"></div>
-    <button type="submit"></button>
+    <div class="user-info">
+      <label>
+        <span id="nameLabel">שם:</span>
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        <span id="emailLabel">דוא"ל:</span>
+        <input type="email" name="email" required>
+      </label>
+      <label>
+        <span id="nativeLanguageLabel">שפת אם:</span>
+        <select name="native_language" required>
+          <option value="">בחר שפה</option>
+          <option value="hebrew">עברית</option>
+          <option value="english">אנגלית</option>
+        </select>
+      </label>
+    </div>
+    
+    <div id="questionsContainer">
+      טוען שאלות...
+    </div>
+    
+    <div class="submit-container">
+      <button type="submit" class="submit-btn" id="submitBtn">שלח</button>
+    </div>
   </form>
 </div>
 
 <script>
-  let lang = "he";
+let config = null;
+let isSubmitting = false;
+let totalQuestions = 0;
+let questionModelMappings = {}; // Store randomized order for each question
 
-  // Mock config since we don't have access to config.json
-  const config = {
-    title: {
-      he: "מחקר TTS בעברית",
-      en: "User Study - Text to Speech"
-    },
-    description: {
-      he: "אנא האזינו לדוגמאות הדיבור ודרגו אותן על פי איכות ההגייה והטבעיות",
-      en: "Please listen to the speech samples and rate them for pronunciation quality and naturalness"
-    },
-    labels: {
-      name: {
-        he: "שם",
-        en: "Name"
-      },
-      email: {
-        he: "דואר אלקטרוני",
-        en: "Email"
-      },
-      nativeLanguage: {
-        he: "שפת אם",
-        en: "Native Language"
-      },
-      natural: {
-        he: "טבעיות",
-        en: "Naturalness"
-      },
-      pronunciation: {
-        he: "איכות הגייה",
-        en: "Pronunciation Quality"
-      },
-      submit: {
-        he: "שלח",
-        en: "Submit"
-      }
-    },
-    samples: [
-      {
-        id: "sample1",
-        prompt: "Hello, how are you today?",
-        options: [
-          { name: "Sample A", url: "audio1.mp3" },
-          { name: "Sample B", url: "audio2.mp3" }
-        ]
-      },
-      {
-        id: "sample2", 
-        prompt: "The weather is nice today.",
-        options: [
-          { name: "Sample A", url: "audio3.mp3" },
-          { name: "Sample B", url: "audio4.mp3" }
-        ]
-      }
-    ],
-    thank_you: {
-      he: "תודה על השתתפותך במחקר!",
-      en: "Thank you for participating in the study!"
-    }
-  };
+// Fisher-Yates shuffle algorithm
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-  const form = document.getElementById("studyForm");
-  //const langSelect = document.getElementById("langSelect");
+// Load config
+async function loadConfig() {
+  try {
+    const response = await fetch('./config.json');
+    config = await response.json();
+    renderStudy();
+  } catch (error) {
+    console.error('Error loading config:', error);
+    alert('שגיאה בטעינת הקובץ. אנא נסו לרענן את הדף.');
+  }
+}
 
-  //langSelect.addEventListener("change", () => {
-  //  lang = langSelect.value;
-  //  renderUI();
-  //});
+function renderStudy() {
+  // Set title and description
+  document.getElementById('title').textContent = config.title;
+  document.getElementById('description').textContent = config.description;
+  document.getElementById('nameLabel').textContent = config.labels.name + ':';
+  document.getElementById('emailLabel').textContent = config.labels.email + ':';
+  document.getElementById('nativeLanguageLabel').textContent = config.labels.native_language + ':';
+  document.getElementById('submitBtn').textContent = config.labels.submit;
   
-
-  function renderUI() {
-    // Set direction for Hebrew
-    document.body.dir = lang === "he" ? "rtl" : "ltr";
-    document.body.style.textAlign = lang === "he" ? "right" : "left";
-
-    // Set title and description
-    document.getElementById("title").textContent = config.title[lang];
-    document.getElementById("description").textContent = config.description[lang];
-
-    // Name, Email & Native Language
-    const userFields = document.getElementById("userFields");
-    userFields.innerHTML = `
-      <div class="user-fields-grid">
-        <label>${config.labels.name[lang]}:
-          <input type="text" name="name" required>
-        </label>
-        <label>${config.labels.email[lang]}:
-          <input type="email" name="email" required>
-        </label>
-        <label>${config.labels.nativeLanguage[lang]}:
-          <select name="nativeLanguage" required>
-            <option value="">${lang === "he" ? "בחר שפה" : "Select language"}</option>
-            <option value="hebrew">${lang === "he" ? "עברית" : "Hebrew"}</option>
-            <option value="english">${lang === "he" ? "אנגלית" : "English"}</option>
-            <option value="arabic">${lang === "he" ? "ערבית" : "Arabic"}</option>
-            <option value="russian">${lang === "he" ? "רוסית" : "Russian"}</option>
-            <option value="spanish">${lang === "he" ? "ספרדית" : "Spanish"}</option>
-            <option value="french">${lang === "he" ? "צרפתית" : "French"}</option>
-            <option value="other">${lang === "he" ? "אחר" : "Other"}</option>
-          </select>
-        </label>
+  totalQuestions = config.samples.length;
+  
+  // Render questions
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  
+  config.samples.forEach((sample, index) => {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question';
+    questionDiv.id = `question-${index}`;
+    
+    // Randomize model order for this question
+    const shuffledModels = shuffleArray(sample.models);
+    questionModelMappings[sample.id] = shuffledModels;
+    
+    // Calculate progress percentage
+    const progressPercentage = Math.round(((index + 1) / totalQuestions) * 100);
+    
+    questionDiv.innerHTML = `
+      <div class="completion-indicator">✓ הושלם</div>
+      <div class="question-header">
+        <h2 class="question-title">שאלה ${index + 1} מתוך ${totalQuestions}</h2>
+        <div class="progress-indicator">${progressPercentage}%</div>
       </div>
-    `;
-
-    // Samples
-    const container = document.getElementById("samplesContainer");
-    container.innerHTML = "";
-    const totalQuestions = config.samples.length;
-
-    // Rating labels
-    const ratingLabels = {
-      he: {
-        natural: {
-          low: "לא טבעי",
-          high: "טבעי מאוד"
-        },
-        pronunciation: {
-          low: "הגייה שגויה",
-          high: "הגייה מושלמת"
-        }
-      },
-      en: {
-        natural: {
-          low: "Not Natural",
-          high: "Very Natural"
-        },
-        pronunciation: {
-          low: "Poor Pronunciation",
-          high: "Perfect Pronunciation"
-        }
-      }
-    };
-
-    config.samples.forEach((sample, i) => {
-      const div = document.createElement("div");
-      div.className = "sample";
-
-      const questionNum = lang === "he" 
-        ? `שאלה ${i + 1} מתוך ${totalQuestions}`
-        : `Question ${i + 1} of ${totalQuestions}`;
-
-      div.innerHTML = `
-        <h2>${questionNum}</h2>
-        <p><strong>${sample.prompt}</strong></p>
-      `;
-
-      // Create each audio sample with its own rating questions
-      sample.options.forEach(opt => {
-        const sampleHtml = `
-          <div class="audio-sample">
-            <div class="audio-option">
-              <strong>${opt.name}</strong>
-              <audio controls preload="none" data-src="${opt.url}">
-                <source type="audio/mp3">
-              </audio>
-            </div>
-            <div class="question-fields">
-              <div class="rating-group">
-                <h4>${config.labels.natural[lang]}:</h4>
-                <div class="rating-scale">
-                  ${[1,2,3,4,5].map(num => `
-                    <label>
-                      <input type="radio" name="${sample.id}_${opt.name}_natural" value="${num}" required>
-                      <span>${num}</span>
-                    </label>
-                  `).join('')}
-                </div>
-                <div class="rating-labels">
-                  <span>${ratingLabels[lang].natural.low}</span>
-                  <span>${ratingLabels[lang].natural.high}</span>
-                </div>
+      <div class="prompt">${sample.prompt}</div>
+      ${shuffledModels.map((model, modelIndex) => `
+        <div class="model" data-model-id="${model.id}" data-model-name="${model.name}" data-display-order="${modelIndex + 1}" data-question-id="${sample.id}">
+          <div class="model-header">מודל ${modelIndex + 1}</div>
+          <audio controls preload="none" data-model-debug="${model.name}">
+            <source src="${model.url}" type="audio/wav">
+            <source src="${model.url}" type="audio/mp3">
+            הדפדפן שלכם לא תומך בהשמעת קבצי שמע
+          </audio>
+          <div class="ratings">
+            <div class="rating-group">
+              <h4>${config.labels.naturalness}</h4>
+              <div class="rating-scale">
+                ${[1,2,3,4,5].map(num => `
+                  <label>
+                    <input type="radio" name="${sample.id}_${model.id}_naturalness" value="${num}" required>
+                    <span>${num}</span>
+                  </label>
+                `).join('')}
               </div>
-              <div class="rating-group">
-                <h4>${config.labels.pronunciation[lang]}:</h4>
-                <div class="rating-scale">
-                  ${[1,2,3,4,5].map(num => `
-                    <label>
-                      <input type="radio" name="${sample.id}_${opt.name}_pronunciation" value="${num}" required>
-                      <span>${num}</span>
-                    </label>
-                  `).join('')}
-                </div>
-                <div class="rating-labels">
-                  <span>${ratingLabels[lang].pronunciation.low}</span>
-                  <span>${ratingLabels[lang].pronunciation.high}</span>
-                </div>
+              <div class="rating-labels">
+                <span>${config.rating_labels.naturalness.low}</span>
+                <span>${config.rating_labels.naturalness.high}</span>
+              </div>
+            </div>
+            <div class="rating-group">
+              <h4>${config.labels.pronunciation}</h4>
+              <div class="rating-scale">
+                ${[1,2,3,4,5].map(num => `
+                  <label>
+                    <input type="radio" name="${sample.id}_${model.id}_pronunciation" value="${num}" required>
+                    <span>${num}</span>
+                  </label>
+                `).join('')}
+              </div>
+              <div class="rating-labels">
+                <span>${config.rating_labels.pronunciation.low}</span>
+                <span>${config.rating_labels.pronunciation.high}</span>
               </div>
             </div>
           </div>
-        `;
-        div.innerHTML += sampleHtml;
-      });
-
-      container.appendChild(div);
-    });
-
-    // Add lazy loading for audio
-    document.querySelectorAll('audio[data-src]').forEach(audio => {
-      audio.addEventListener('loadstart', function() {
-        if (!this.src && this.dataset.src) {
-          this.src = this.dataset.src;
-          this.load();
-        }
-      });
-      
-      audio.addEventListener('play', function() {
-        if (!this.src && this.dataset.src) {
-          this.src = this.dataset.src;
-          this.load();
+        </div>
+      `).join('')}
+    `;
+    
+    container.appendChild(questionDiv);
+  });
+  
+  // Prevent multiple audio playing
+  const audioElements = document.querySelectorAll('audio');
+  audioElements.forEach(audio => {
+    audio.addEventListener('play', (e) => {
+      audioElements.forEach(otherAudio => {
+        if (otherAudio !== e.target) {
+          otherAudio.pause();
         }
       });
     });
+  });
+}
 
-    // Prevent multiple audio playing at once
-    const tracks = Array.from(document.querySelectorAll("audio"));
-    tracks.forEach(function (track) {
-      track.addEventListener("play", (event) => {
-        tracks.forEach(function (track) {
-          if (track !== event.target) track.pause();
-        });
-      });
-    });
-
-    form.querySelector("button").textContent = config.labels.submit[lang];
+function isQuestionComplete(questionIndex) {
+  const sample = config.samples[questionIndex];
+  const shuffledModels = questionModelMappings[sample.id];
+  
+  for (let model of shuffledModels) {
+    const naturalness = document.querySelector(`input[name="${sample.id}_${model.id}_naturalness"]:checked`);
+    const pronunciation = document.querySelector(`input[name="${sample.id}_${model.id}_pronunciation"]:checked`);
+    if (!naturalness || !pronunciation) {
+      return false;
+    }
   }
+  return true;
+}
 
-  form.onsubmit = function(e) {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    console.log("User submission:", data);
+function updateQuestionStatus() {
+  for (let i = 0; i < totalQuestions; i++) {
+    const questionElement = document.getElementById(`question-${i}`);
+    if (isQuestionComplete(i)) {
+      if (questionElement) {
+        questionElement.classList.add('completed');
+      }
+    } else {
+      if (questionElement) {
+        questionElement.classList.remove('completed');
+      }
+    }
+  }
+}
+
+// Update question status when radio buttons change
+document.addEventListener('change', function(e) {
+  if (e.target.type === 'radio') {
+    updateQuestionStatus();
+  }
+});
+
+// Form submission
+document.getElementById('studyForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  if (isSubmitting) return;
+  isSubmitting = true;
+  
+  // Warning before submission
+  alert('שולח נתונים... אנא אל תסגרו את הדפדפן עד לקבלת הודעה!');
+  
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+  
+  // Structure the data
+  const submissionData = {
+    timestamp: new Date().toISOString(),
+    user: {
+      name: data.name,
+      email: data.email,
+      native_language: data.native_language
+    },
+    responses: {},
+    model_mappings: questionModelMappings // Include the randomized order
+  };
+  
+  // Process ratings
+  config.samples.forEach(sample => {
+    const shuffledModels = questionModelMappings[sample.id];
     
-    // Show warning message before sending
-    const warningMessage = lang === "he" 
-      ? "שולח נתונים... אנא אל תסגור את הדפדפן עד שתראה הודעת תודה!"
-      : "Sending data... Please don't close the browser until you see the thank you message!";
-    alert(warningMessage);
+    submissionData.responses[sample.id] = {
+      prompt: sample.prompt,
+      ratings: {}
+    };
     
-    // Send to JSONBin
-    fetch('https://api.jsonbin.io/v3/b', {
+    shuffledModels.forEach((model, modelIndex) => {
+      const naturalnessKey = `${sample.id}_${model.id}_naturalness`;
+      const pronunciationKey = `${sample.id}_${model.id}_pronunciation`;
+      
+      submissionData.responses[sample.id].ratings[model.id] = {
+        model_name: model.name,
+        display_order: modelIndex + 1, // The order shown to user (1, 2, 3, 4)
+        naturalness: parseInt(data[naturalnessKey]),
+        pronunciation: parseInt(data[pronunciationKey])
+      };
+    });
+  });
+  
+  try {
+    // Send to Supabase
+    const response = await fetch(`${config.supabase.url}/rest/v1/${config.supabase.table_name}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': '$2a$10$BE5nbqzhxX9aDpbKIn.UG.66NOrkJR.1y1wi9kBCXmd0OIBS433Cq'
+        'apikey': config.supabase.anon_key,
+        'Authorization': `Bearer ${config.supabase.anon_key}`
       },
       body: JSON.stringify({
-        timestamp: new Date().toISOString(),
-        language: lang,
-        responses: data
+        data: submissionData
       })
-    })
-    .then(response => response.json())
-    .then(result => {
-      console.log('Data saved:', result);
-      alert(config.thank_you[lang]);
-      form.reset();
-    })
-    .catch(error => {
-      console.error('Error saving data:', error);
-      const errorMessage = lang === "he"
-        ? "שגיאה בשמירת הנתונים. אנא נסה שוב."
-        : "Error saving data. Please try again.";
-      alert(errorMessage);
     });
-  };
+    
+    // Supabase returns 201 for successful creation
+    if (response.status === 200 || response.status === 201) {
+      const result = await response.json();
+      console.log('Data saved successfully:', result);
+      alert(config.thank_you);
+      
+      // Reset form
+      this.reset();
+      updateQuestionStatus();
+    } else {
+      const errorText = await response.text();
+      console.error('Server error:', response.status, errorText);
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
+  } catch (error) {
+    console.error('Error saving data:', error);
+    alert('שגיאה בשליחת הנתונים. אנא נסו שוב.');
+  } finally {
+    isSubmitting = false;
+  }
+});
 
-  renderUI(); // initial render
+// Warn before page unload
+window.addEventListener('beforeunload', function(e) {
+  if (!isSubmitting) {
+    e.preventDefault();
+    e.returnValue = 'האם אתם בטוחים שאתם רוצים לעזוב? הנתונים לא נשמרו!';
+  }
+});
+
+// Load the study when page loads
+loadConfig();
 </script>
 
 </body>
