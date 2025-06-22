@@ -416,9 +416,17 @@
                 const key = `by_${type === 'combined' ? 'combined_score' : type}`;
                 const rankings = analysis.rankings[key];
                 
-                list.innerHTML = rankings.map(([model, score]) => {
-                    const value = type === 'satisfaction' ? `${score}%` : 
-                                 type === 'combined' ? score : score;
+                list.innerHTML = rankings.map(([model, modelData]) => {
+                    let value;
+                    if (type === 'combined') {
+                        value = modelData.combined_score;
+                    } else if (type === 'naturalness') {
+                        value = modelData.naturalness.mean;
+                    } else if (type === 'pronunciation') {
+                        value = modelData.pronunciation.mean;
+                    } else if (type === 'satisfaction') {
+                        value = `${modelData.overall_satisfaction}%`;
+                    }
                     return `<li>${model}: ${value}</li>`;
                 }).join('');
             });
