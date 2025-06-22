@@ -63,6 +63,184 @@
       border-radius: 5px;
       font-size: 16px;
     }
+
+    .continue-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .continue-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .continue-btn:hover {
+      background: #0056b3;
+    }
+
+    .continue-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .rating-instructions {
+      background: #ffffff;
+      border: 2px solid #28a745;
+      color: #333;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      display: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      animation: slideInFromTop 0.6s ease-out;
+    }
+
+    @keyframes slideInFromTop {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .rating-instructions.pulse {
+      animation: pulse 2s infinite;
+    }
+
+    .rating-instructions h3 {
+      margin-top: 0;
+      color: #333;
+      font-size: 1.4em;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .instruction-item {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .instruction-item:hover {
+      background: #f1f3f4;
+      border-color: #dee2e6;
+    }
+
+    .instruction-item.checked {
+      background: #f8fff9;
+      border-color: #28a745;
+      border-width: 2px;
+    }
+
+    .instruction-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .instruction-checkbox input[type="checkbox"] {
+      margin-top: 4px;
+      transform: scale(1.3);
+      cursor: pointer;
+    }
+
+    .instruction-checkbox input[type="checkbox"]:checked {
+      accent-color: #28a745;
+    }
+
+    .instruction-text {
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .instruction-text strong {
+      color: #28a745;
+    }
+
+    .instructions-progress {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px dashed #28a745;
+    }
+
+    .progress-text {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #28a745, #20c997);
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 4px;
+    }
+
+    .start-questions-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 15px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .start-questions-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+      animation: glow 2s infinite alternate;
+    }
+
+    .start-questions-btn.enabled:hover {
+      background: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+      to { box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); }
+    }
+
+    .questions-section {
+      display: none;
+    }
     
     .question {
       background: white;
@@ -174,7 +352,6 @@
     
     .rating-scale label:hover {
       background: #ced4da;
-      transform: scale(1.05);
     }
     
     .rating-scale input:checked + span {
@@ -299,16 +476,73 @@
           <option value="">בחר שפה</option>
           <option value="hebrew">עברית</option>
           <option value="english">אנגלית</option>
+          <option value="other">שפה אחרת</option>
         </select>
       </label>
     </div>
-    
-    <div id="questionsContainer">
-      טוען שאלות...
+
+    <div class="continue-container">
+      <button type="button" class="continue-btn" id="continueBtn" disabled>המשך למחקר</button>
     </div>
-    
-    <div class="submit-container">
-      <button type="submit" class="submit-btn" id="submitBtn">שלח</button>
+
+    <div class="rating-instructions pulse" id="ratingInstructions">
+      <h3>🎧 הוראות למתן דירוגים - קראו בעינים!</h3>
+      
+      <div class="instruction-item" id="instruction1">
+        <label class="instruction-checkbox">
+          <input type="checkbox" id="check1">
+          <div class="instruction-text">
+            <strong>טבעיות:</strong> דרגו עד כמה הדיבור נשמע טבעי ודומה לאדם אמיתי (1 = רובוטי מאוד, 5 = טבעי מאוד)
+          </div>
+        </label>
+      </div>
+
+      <div class="instruction-item" id="instruction2">
+        <label class="instruction-checkbox">
+          <input type="checkbox" id="check2">
+          <div class="instruction-text">
+            <strong>נאמנות לתוכן:</strong> דרגו עד כמה הדיבור נאמן לטקסט המקורי והתבטאות נכונה (1 = לא נאמן, 5 = נאמן מאוד)
+          </div>
+        </label>
+      </div>
+
+      <div class="instruction-item" id="instruction3">
+        <label class="instruction-checkbox">
+          <input type="checkbox" id="check3">
+          <div class="instruction-text">
+            <strong>האזינו היטב:</strong> מומלץ להאזין לכל דוגמה מספר פעמים לפני מתן הדירוג
+          </div>
+        </label>
+      </div>
+
+      <div class="instruction-item" id="instruction4">
+        <label class="instruction-checkbox">
+          <input type="checkbox" id="check4">
+          <div class="instruction-text">
+            <strong>השוו בין המודלים:</strong> השוו את איכות הדיבור בין המודלים השונים באותה שאלה
+          </div>
+        </label>
+      </div>
+
+      <div class="instructions-progress">
+        <div class="progress-text" id="progressText">אנא סמנו כל הוראה לאחר קריאתה (0/4)</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <button type="button" class="start-questions-btn" id="startQuestionsBtn">
+          ✨ התחל את המחקר - כל ההוראות נקראו!
+        </button>
+      </div>
+    </div>
+
+    <div class="questions-section" id="questionsSection">
+      <div id="questionsContainer">
+        טוען שאלות...
+      </div>
+      
+      <div class="submit-container">
+        <button type="submit" class="submit-btn" id="submitBtn">שלח</button>
+      </div>
     </div>
   </form>
 </div>
@@ -327,6 +561,89 @@ function shuffleArray(array) {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
+}
+
+// Check if user info is complete
+function checkUserInfoComplete() {
+  const name = document.querySelector('input[name="name"]').value.trim();
+  const email = document.querySelector('input[name="email"]').value.trim();
+  const nativeLanguage = document.querySelector('select[name="native_language"]').value;
+  
+  const isComplete = name && email && nativeLanguage;
+  document.getElementById('continueBtn').disabled = !isComplete;
+  return isComplete;
+}
+
+// Continue button click handler
+function showQuestions() {
+  document.getElementById('ratingInstructions').style.display = 'block';
+  document.getElementById('continueBtn').style.display = 'none';
+  
+  // Smooth scroll to rating instructions
+  document.getElementById('ratingInstructions').scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'
+  });
+  
+  // Remove pulse animation after a few seconds to reduce distraction
+  setTimeout(() => {
+    document.getElementById('ratingInstructions').classList.remove('pulse');
+  }, 4000);
+}
+
+// Check instructions progress
+function updateInstructionsProgress() {
+  const checkboxes = document.querySelectorAll('#ratingInstructions input[type="checkbox"]');
+  const checkedCount = document.querySelectorAll('#ratingInstructions input[type="checkbox"]:checked').length;
+  const totalCount = checkboxes.length;
+  
+  // Update progress text
+  document.getElementById('progressText').textContent = 
+    `אנא סמנו כל הוראה לאחר קריאתה (${checkedCount}/${totalCount})`;
+  
+  // Update progress bar
+  const progressPercentage = (checkedCount / totalCount) * 100;
+  document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+  
+  // Update instruction items visual state
+  checkboxes.forEach((checkbox, index) => {
+    const instructionItem = document.getElementById(`instruction${index + 1}`);
+    if (checkbox.checked) {
+      instructionItem.classList.add('checked');
+    } else {
+      instructionItem.classList.remove('checked');
+    }
+  });
+  
+  // Enable/disable start questions button
+  const startBtn = document.getElementById('startQuestionsBtn');
+  if (checkedCount === totalCount) {
+    startBtn.classList.add('enabled');
+    document.getElementById('progressText').textContent = '✅ כל ההוראות נקראו! כעת ניתן להתחיל את המחקר';
+  } else {
+    startBtn.classList.remove('enabled');
+  }
+}
+
+// Start questions after reading instructions
+function startQuestions() {
+  const startBtn = document.getElementById('startQuestionsBtn');
+  if (!startBtn.classList.contains('enabled')) {
+    // Shake animation for emphasis
+    document.getElementById('ratingInstructions').style.animation = 'pulse 0.5s';
+    setTimeout(() => {
+      document.getElementById('ratingInstructions').style.animation = '';
+    }, 500);
+    return;
+  }
+  
+  document.getElementById('questionsSection').style.display = 'block';
+  
+  // Smooth scroll to questions
+  document.getElementById('questionsSection').scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
 
 // Load config
@@ -400,18 +717,18 @@ function renderStudy() {
               </div>
             </div>
             <div class="rating-group">
-              <h4>${config.labels.pronunciation}</h4>
+              <h4>נאמנות לתוכן</h4>
               <div class="rating-scale">
                 ${[1,2,3,4,5].map(num => `
                   <label>
-                    <input type="radio" name="${sample.id}_${model.id}_pronunciation" value="${num}" required>
+                    <input type="radio" name="${sample.id}_${model.id}_content_fidelity" value="${num}" required>
                     <span>${num}</span>
                   </label>
                 `).join('')}
               </div>
               <div class="rating-labels">
-                <span>${config.rating_labels.pronunciation.low}</span>
-                <span>${config.rating_labels.pronunciation.high}</span>
+                <span>לא נאמן</span>
+                <span>נאמן מאוד</span>
               </div>
             </div>
           </div>
@@ -441,8 +758,8 @@ function isQuestionComplete(questionIndex) {
   
   for (let model of shuffledModels) {
     const naturalness = document.querySelector(`input[name="${sample.id}_${model.id}_naturalness"]:checked`);
-    const pronunciation = document.querySelector(`input[name="${sample.id}_${model.id}_pronunciation"]:checked`);
-    if (!naturalness || !pronunciation) {
+    const contentFidelity = document.querySelector(`input[name="${sample.id}_${model.id}_content_fidelity"]:checked`);
+    if (!naturalness || !contentFidelity) {
       return false;
     }
   }
@@ -464,11 +781,26 @@ function updateQuestionStatus() {
   }
 }
 
-// Update question status when radio buttons change
+// Event listeners
+document.addEventListener('input', function() {
+  checkUserInfoComplete();
+});
+
 document.addEventListener('change', function(e) {
   if (e.target.type === 'radio') {
     updateQuestionStatus();
+  } else if (e.target.type === 'checkbox' && e.target.id.startsWith('check')) {
+    updateInstructionsProgress();
+  } else {
+    checkUserInfoComplete();
   }
+});
+
+document.getElementById('continueBtn').addEventListener('click', showQuestions);
+
+// Add event listener for start questions button
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('startQuestionsBtn').addEventListener('click', startQuestions);
 });
 
 // Form submission
@@ -507,13 +839,13 @@ document.getElementById('studyForm').addEventListener('submit', async function(e
     
     shuffledModels.forEach((model, modelIndex) => {
       const naturalnessKey = `${sample.id}_${model.id}_naturalness`;
-      const pronunciationKey = `${sample.id}_${model.id}_pronunciation`;
+      const contentFidelityKey = `${sample.id}_${model.id}_content_fidelity`;
       
       submissionData.responses[sample.id].ratings[model.id] = {
         model_name: model.name,
         display_order: modelIndex + 1, // The order shown to user (1, 2, 3, 4)
         naturalness: parseInt(data[naturalnessKey]),
-        pronunciation: parseInt(data[pronunciationKey])
+        content_fidelity: parseInt(data[contentFidelityKey])
       };
     });
   });
